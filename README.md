@@ -12,11 +12,11 @@ but there are some valid use cases. If your Django app is behind a caching
 reverse proxy and you need to scale your application servers, it may be
 simpler to store files in the database.
 
-Based upon django-database-files by [Kimetrica](https://github.com/kimetrica/django-database-files), [rhunwicks](https://github.com/rhunwicks/django-database-files), [chrisspen](https://github.com/chrisspen/django-database-files-3000), [bfirsh](https://github.com/bfirsh/django-database-files) but updated to work with Django 2.2-3.1, Python 3.6+ and to use a binary field for storage.
+Based upon django-database-files by [Kimetrica](https://github.com/kimetrica/django-database-files), [rhunwicks](https://github.com/rhunwicks/django-database-files), [chrisspen](https://github.com/chrisspen/django-database-files-3000), [bfirsh](https://github.com/bfirsh/django-database-files) but updated to work with Django 2.2-4.0, Python 3.6+ and to use a binary field for storage.
 
 Requires:
 
-  * Django 2.2 - 3.2
+  * Django 2.2 - 4.0
 
 Installation
 ------------
@@ -78,12 +78,12 @@ Settings
     In this case, you will also need to updates your `urls.py` to include the view
     that serves the files:
 
-        urlpatterns = patterns('',
+        urlpatterns = [
             # ... the rest of your URLconf goes here ...
 
             # Serve Database Files directly
-            url(r'', include('binary_database_files.urls')),
-        )
+            path(r"", include("binary_database_files.urls")),
+        ]
 
 * `DATABASE_FILES_BASE_URL`
 
@@ -119,5 +119,7 @@ To run a specific test:
 
 To build and deploy a versioned package to PyPI, verify [all unittests are passing](https://travis-ci.com/kimetrica/django-binary-database-files/), then increase (and commit) the version number in `binary_database_files/__init__.py` and then run:
 
-    python setup.py sdist
-    python setup.py sdist upload
+    python setup.py sdist bdist_wheel
+    twine check dist/*
+    twine upload dist/*
+    
